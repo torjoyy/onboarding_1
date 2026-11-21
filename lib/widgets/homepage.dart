@@ -7,7 +7,19 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todo'),
+        title: Text(
+          'Todo',
+
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: .bold,
+          ),
+        ),
+
+        backgroundColor: Color.fromARGB(255, 255, 153, 9),
+        elevation: 0,
+        centerTitle: true,
+        
       ),
     );
   }

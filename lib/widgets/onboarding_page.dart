@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onboarding_1/models/onboard_item.dart';
+import 'package:onboarding_1/widgets/homepage.dart';
 import 'package:onboarding_1/widgets/onboard_item_widget.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -12,6 +13,8 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
 
   int _currentPage = 0;
+
+  final PageController _pageController = PageController();
 
   final List<OnboardItem> _pages = [
 
@@ -35,6 +38,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
   ];
 
   @override
+    void dispose() {
+      _pageController.dispose();
+      super.dispose();
+    }
+
+    void _next() {
+      if(_currentPage < _pages.length -1) {
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.ease,
+          );
+      }else{
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
+      }
+    }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
@@ -44,6 +66,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
               [
                 Flexible(
                   child: PageView.builder(
+                    
+                    controller: _pageController,
+
                     itemCount: _pages.length,
                     onPageChanged: (value) => setState(() {
                       _currentPage = value;
@@ -63,7 +88,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       _pages.length,
                       (index) {
                       return AnimatedContainer(
-                        duration: const Duration(microseconds: 300),
+                        duration: const Duration(milliseconds: 300),
 
                       height: 8,
                       width: _currentPage == index ? 18: 8,
@@ -82,7 +107,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 width: double.infinity,
 
                 child: FilledButton(
-                  onPressed: (){},
+                  onPressed: _next,
 
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 20),
